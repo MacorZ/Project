@@ -1,0 +1,121 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package service;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import model.Authors;
+import model.Books;
+import model.Publichers;
+import repository.DAO_Authors;
+import repository.DAO_Books;
+import repository.DAO_Publisher;
+import view.View_Add;
+import view.View_home;
+
+/**
+ *
+ * @author acer
+ */
+public class Controller_Add {
+
+    private View_Add view;
+
+    public Controller_Add(View_Add view) {
+        this.view = view;
+    }
+
+    public void AddCombobox() {
+        List<Authors> list_au = DAO_Authors.callClass().selectAll();
+        List<Publichers> list_pub = DAO_Publisher.callClass().selectAll();
+        DefaultComboBoxModel model_au = (DefaultComboBoxModel) view.jComboBox_au.getModel();
+        DefaultComboBoxModel model_pub = (DefaultComboBoxModel) view.jComboBox_pub.getModel();
+        model_au.removeAllElements();
+        model_pub.removeAllElements();
+        list_au.forEach((t) -> {
+            model_au.addElement(t.getAu_Name());
+        });
+        list_pub.forEach((t) -> {
+            model_pub.addElement(t.getPub_Name());
+        });
+
+    }
+
+    public Books check() {
+        String id = view.jTextField_id.getText();
+        String name = view.jTextField_name.getText();
+        String note = view.jTextArea_note.getText();
+
+        String usn = view.us.getUserName();
+        if (id == null || id.equals("")) {
+            JOptionPane.showMessageDialog(view, "Không để trống ID");
+            return null;
+        }
+        if (name == null || name.equals("")) {
+            JOptionPane.showMessageDialog(view, "Không để trống Title");
+            return null;
+        }
+        if (view.jComboBox_pub.getSelectedIndex() < 0) {
+            JOptionPane.showMessageDialog(view, "Chưa chọn nhà xuất bản");
+            return null;
+        }
+        if (view.jComboBox_au.getSelectedIndex() < 0) {
+            JOptionPane.showMessageDialog(view, "Chưa chọn tác giả");
+            return null;
+        }
+        String Author = view.jComboBox_au.getSelectedItem().toString();
+        String Publisher = view.jComboBox_pub.getSelectedItem().toString();
+        if (note == null || note.equals("")) {
+            JOptionPane.showMessageDialog(view, "Không để trống Note");
+            return null;
+        }
+        String regex = "[a-zA-Z]{2}[0-9]{4}";
+        if (!id.matches(regex)) {
+            JOptionPane.showMessageDialog(view, "ID không hợp lệ");
+            return null;
+        }
+        Books bk = new Books(id, name, Publisher, Author, note, usn);
+        return bk;
+    }
+
+    public void reset() {
+        view.jTextField_id.setText("");
+        view.jTextField_name.setText("");
+        view.jTextArea_note.setText("");
+        view.jComboBox_au.setSelectedIndex(-1);
+        view.jComboBox_pub.setSelectedIndex(-1);
+    }
+
+    public void Add() {
+        Books bk = check();
+        if (bk == null) {
+            return;
+        }
+        if (check(bk) == false) {
+            JOptionPane.showMessageDialog(view, "ID Book đã tồn tại");
+            return;
+        }
+        DAO_Books.callClass().insert(bk);
+        JOptionPane.showMessageDialog(view, "Thành công");
+        view.dispose();
+        View_home view_h = new View_home(view.us);
+        view_h.setVisible(true);
+        view_h.setLocationRelativeTo(null);
+        view_h.jComboBox1.setSelectedItem("All");
+        view_h.controller.Sreach();
+
+    }
+
+    public boolean check(Books bk) {
+        Books bk_temp = DAO_Books.callClass().selectObj(bk);
+        if (bk_temp.getBook_ID() == null) {
+            return true;
+        }
+        return false;
+    }
+
+}
