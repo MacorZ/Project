@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package reposirory;
+package reposirory.impl;
 
 import java.util.List;
 import model.Grade;
@@ -11,17 +11,20 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import utility.HibenateUtil;
+import reposirory.ICommon;
 
 /**
  *
  * @author acer
  */
-public class GradeRepo implements RepoInterface<Grade> {
+public class GradeRepo implements ICommon<Grade> {
 
     @Override
     public List<Grade> selectAll() {
         try ( Session ss = HibenateUtil.getFactory().openSession();) {
-            return ss.createCriteria(Grade.class).list();
+            String hql = "from Grade d order by (d.englishScore + d.itScore + d.peScore) desc ";
+            Query query = ss.createQuery(hql,Grade.class);
+            return query.setMaxResults(3).list();
         } catch (Exception e) {
             e.printStackTrace();
         }

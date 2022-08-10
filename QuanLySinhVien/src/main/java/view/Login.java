@@ -8,7 +8,7 @@ package view;
 
 import javax.swing.JOptionPane;
 import model.User;
-import service.UserService;
+import service.impl.UserService;
 
 /**
  *

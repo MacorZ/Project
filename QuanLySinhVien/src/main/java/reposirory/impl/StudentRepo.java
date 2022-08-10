@@ -2,24 +2,27 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package reposirory;
+package reposirory.impl;
 
 import java.util.List;
 import model.Students;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import utility.HibenateUtil;
+import reposirory.ICommon;
 
 /**
  *
  * @author acer
  */
-public class StudentRepo implements RepoInterface<Students> {
+public class StudentRepo implements ICommon<Students> {
 
     @Override
     public List<Students> selectAll() {
         try ( Session ss = HibenateUtil.getFactory().openSession();) {
-            return ss.createCriteria(Students.class).list();
+            Query query = ss.createQuery("From Students st");
+            return query.list();
         } catch (Exception e) {
             e.printStackTrace();
         }

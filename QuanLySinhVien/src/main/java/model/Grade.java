@@ -29,25 +29,25 @@ public class Grade {
     @JoinColumn(name = "masv",nullable = true)
     private Students students;
     @Column(name = "tienganh",nullable = true)
-    private int English_Score;
+    private int englishScore;
     @Column(name = "tinhoc",nullable = true)
-    private int IT_Score;
+    private int itScore;
     @Column(name = "gdtc",nullable = true)
-    private int PE_Score;
+    private int peScore;
 
-    public Grade(int Id, Students students, int English_Score, int IT_Score, int PE_Score) {
+    public Grade(int Id, Students students, int englishScore, int itScore, int peScore) {
         this.Id = Id;
         this.students = students;
-        this.English_Score = English_Score;
-        this.IT_Score = IT_Score;
-        this.PE_Score = PE_Score;
+        this.englishScore = englishScore;
+        this.itScore = itScore;
+        this.peScore = peScore;
     }
 
-    public Grade(Students students, int English_Score, int IT_Score, int PE_Score) {
+    public Grade(Students students, int englishScore, int itScore, int peScore) {
         this.students = students;
-        this.English_Score = English_Score;
-        this.IT_Score = IT_Score;
-        this.PE_Score = PE_Score;
+        this.englishScore = englishScore;
+        this.itScore = itScore;
+        this.peScore = peScore;
     }
 
     public Grade() {
@@ -73,43 +73,44 @@ public class Grade {
         this.students = students;
     }
 
-    public int getEnglish_Score() {
-        return English_Score;
+    public int getEnglishScore() {
+        return englishScore;
     }
 
-    public void setEnglish_Score(int English_Score) {
-        this.English_Score = English_Score;
+    public void setEnglishScore(int englishScore) {
+        this.englishScore = englishScore;
     }
 
-    public int getIT_Score() {
-        return IT_Score;
+    public int getItScore() {
+        return itScore;
     }
 
-    public void setIT_Score(int IT_Score) {
-        this.IT_Score = IT_Score;
+    public void setItScore(int itScore) {
+        this.itScore = itScore;
     }
 
-    public int getPE_Score() {
-        return PE_Score;
+    public int getPeScore() {
+        return peScore;
     }
 
-    public void setPE_Score(int PE_Score) {
-        this.PE_Score = PE_Score;
+    public void setPeScore(int peScore) {
+        this.peScore = peScore;
     }
+
     
    
-    public double getMedium_Score(){
-        double score = (this.English_Score+this.IT_Score+this.PE_Score)/3;
+    public double getMediumScore(){
+        double score = (this.englishScore+this.itScore+this.peScore)/3;
         return score;
     }
 
     @Override
     public String toString() {
-        return "Grade{" + "Id=" + Id + ", students=" + students + ", English_Score=" + English_Score + ", IT_Score=" + IT_Score + ", PE_Score=" + PE_Score + '}';
+        return "Grade{" + "Id=" + Id + ", students=" + students + ", English_Score=" + englishScore + ", IT_Score=" + itScore + ", PE_Score=" + peScore + '}';
     }
     public Object[] getObj(){
         return new Object[]{
-          students.getStudentID(),students.getStudentName(),English_Score,IT_Score,PE_Score,getMedium_Score()
+          students.getStudentID(),students.getStudentName(),englishScore,itScore,peScore,getMediumScore()
         };
     }
     

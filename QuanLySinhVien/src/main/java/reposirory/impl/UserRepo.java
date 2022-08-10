@@ -2,18 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package reposirory;
+package reposirory.impl;
 
 import java.util.List;
 import model.User;
 import org.hibernate.Session;
 import utility.HibenateUtil;
+import reposirory.ICommon;
 
 /**
  *
  * @author acer
  */
-public class UserRepo implements RepoInterface<User>{
+public class UserRepo implements ICommon<User>{
 
     @Override
     public List<User> selectAll() {

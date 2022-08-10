@@ -4,13 +4,14 @@
  */
 package view;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Grade;
 import model.Students;
-import service.GradeService;
-import service.StudentService;
+import service.impl.GradeService;
+import service.impl.StudentService;
 
 /**
  *
@@ -25,12 +26,12 @@ public class ViewGrade extends javax.swing.JFrame {
     int check;
     GradeService service;
     private int id;
-
+    private List<Grade> list;
     public ViewGrade() {
         initComponents();
         model = (DefaultTableModel) jTable1.getModel();
         service = new GradeService();
-
+        list = new ArrayList<>();
         showTb();
         reset();
 
@@ -425,7 +426,7 @@ public class ViewGrade extends javax.swing.JFrame {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         check = jTable1.getSelectedRow();
-
+        btnDel.setEnabled(true);
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
@@ -515,12 +516,12 @@ public class ViewGrade extends javax.swing.JFrame {
     public void insertToObj(Grade gr) {
         id = gr.getId();
         jlbhoTen.setText(gr.getStudents().getStudentName());
-        jlbDtb.setText(gr.getMedium_Score() + "");
+        jlbDtb.setText(gr.getMediumScore() + "");
         txtmaSv.setText(gr.getStudents().getStudentID());
         txtmaSv.setEnabled(false);
-        txtTa.setText(gr.getEnglish_Score() + "");
-        txtTinhoc.setText(gr.getIT_Score() + "");
-        txtGdtc.setText(gr.getPE_Score() + "");
+        txtTa.setText(gr.getEnglishScore()+ "");
+        txtTinhoc.setText(gr.getItScore()+ "");
+        txtGdtc.setText(gr.getPeScore()+ "");
         btnDel.setEnabled(true);
         btnSave.setEnabled(true);
     }
@@ -542,7 +543,7 @@ public class ViewGrade extends javax.swing.JFrame {
 
     public void showTb() {
         model.setRowCount(0);
-        List<Grade> list = service.selectAll();
+        list = service.selectAll();
         if (list.isEmpty()) {
             btnFirt.setEnabled(false);
             btnNext.setEnabled(false);
@@ -562,11 +563,8 @@ public class ViewGrade extends javax.swing.JFrame {
     }
 
     public Grade insertToTb(int index) {
-        Students s = new Students();
-        s.setStudentID(model.getValueAt(check, 0).toString());
-        Grade g = new Grade();
-        g.setStudents(s);
-        return service.selectOne(g);
+       return list.get(check);
+       
     }
 
     public Grade insertToForm() {

@@ -2,20 +2,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package service;
+package service.impl;
 
 import java.util.List;
 import model.Grade;
 import model.Students;
-import reposirory.GradeRepo;
-import reposirory.StudentRepo;
+import reposirory.impl.GradeRepo;
+import reposirory.impl.StudentRepo;
 import utility.UtilClass;
+import service.ICommon;
 
 /**
  *
  * @author acer
  */
-public class StudentService implements ServiceInterface<Students> {
+public class StudentService implements ICommon<Students> {
 
     private static final StudentRepo repo = new StudentRepo();
     private static final GradeRepo repoGr = new GradeRepo();

@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Students;
-import service.StudentService;
+import service.impl.StudentService;
 
 /**
  *
@@ -27,12 +27,14 @@ public class ViewStudents extends javax.swing.JFrame {
     DefaultTableModel model;
     int check;
     StudentService service;
+    List<Students> list;
     /**
      * Creates new form ViewStudents
      */
     public ViewStudents() {
         initComponents();
         model = (DefaultTableModel) Table.getModel();
+        list = new ArrayList<>();
         check = -1;
         pathImg = "";
         service = new StudentService();
@@ -115,12 +117,6 @@ public class ViewStudents extends javax.swing.JFrame {
         txtAddress.setColumns(20);
         txtAddress.setRows(5);
         jScrollPane1.setViewportView(txtAddress);
-
-        txtEmail.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtEmailActionPerformed(evt);
-            }
-        });
 
         buttonGroup1.add(rdnMan);
         rdnMan.setText("Nam");
@@ -309,13 +305,9 @@ public class ViewStudents extends javax.swing.JFrame {
     private void TableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableMouseClicked
         // TODO add your handling code here:
          check = Table.getSelectedRow();
-         
+         btnDel.setEnabled(true);
 
     }//GEN-LAST:event_TableMouseClicked
-
-    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtEmailActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
@@ -347,7 +339,7 @@ public class ViewStudents extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelActionPerformed
-        Students students = insertToForm();
+        Students students = list.get(check);
         String check = service.delete(students);
         if(!check.equals("")){
             JOptionPane.showMessageDialog(rootPane,check);
@@ -398,8 +390,8 @@ public class ViewStudents extends javax.swing.JFrame {
 
     
 
-    public void getSex(String s) {
-        if (s.equalsIgnoreCase("Nam")) {
+    public void getSex(boolean s) {
+        if (s) {
             rdnMan.setSelected(true);
         } else {
             rdnWoman.setSelected(true);
@@ -408,7 +400,7 @@ public class ViewStudents extends javax.swing.JFrame {
 
     public void showTb() {
         model.setRowCount(0);
-        List<Students> list = service.selectAll();
+        list = service.selectAll();
         list.forEach((t) -> {
             model.addRow(t.getObj());
         });
@@ -416,23 +408,16 @@ public class ViewStudents extends javax.swing.JFrame {
     }
 
     public void insertToTable(int index) {
-        check = index;
-        String Id = model.getValueAt(index, 0).toString();
-        String Name = model.getValueAt(index, 1).toString();
-        String Email = model.getValueAt(index, 2).toString();
-        String Phone = model.getValueAt(index, 3).toString();
-        String Sex = model.getValueAt(index, 4).toString();
-        String Adress = model.getValueAt(index, 5).toString();
-        String Img = model.getValueAt(index, 6).toString();
-        txtID.setText(Id);
+        Students students = list.get(index);
+        txtID.setText(students.getStudentID());
         txtID.setEnabled(false);
-        txtName.setText(Name);
-        txtEmail.setText(Email);
-        txtPhoneNumber.setText(Phone);
-        txtAddress.setText(Adress);
-        pathImg = Img;
+        txtName.setText(students.getStudentName());
+        txtEmail.setText(students.getEmail());
+        txtPhoneNumber.setText(students.getPhoneNumber());
+        txtAddress.setText(students.getAddress());
+        pathImg = students.getIMG();
         insertImg(pathImg);
-        getSex(Sex);
+        getSex(students.isSex());
         btnSave.setEnabled(true);
         btnDel.setEnabled(true);
     }

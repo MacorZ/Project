@@ -2,17 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package service;
+package service.impl;
 
 import java.util.List;
 import model.User;
-import reposirory.UserRepo;
+import reposirory.impl.UserRepo;
+import service.ICommon;
 
 /**
  *
  * @author acer
  */
-public class UserService implements ServiceInterface<User>{
+public class UserService implements ICommon<User>{
 private static final UserRepo repo = new UserRepo();
     @Override
     public List<User> selectAll() {
